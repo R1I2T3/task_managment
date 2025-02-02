@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import InputFormControl from "@/components/Input";
 import { FormProvider, useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { signUpSchema, signupType } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 const SignUpForm = () => {
   const form = useForm<signupType>({
     resolver: zodResolver(signUpSchema),
@@ -18,8 +19,32 @@ const SignUpForm = () => {
       password: "",
     },
   });
-  const onSubmit = async () => {};
-  const isExecuting = false;
+  const [isExecuting, setIsExecuting] = useState(false);
+  const onSubmit = async (formData: signupType) => {
+    setIsExecuting(true);
+    await authClient.signUp.email(
+      {
+        email: formData.email,
+        password: formData.password,
+        name: formData.username,
+      },
+      {
+        onSuccess: async () => {
+          await authClient.sendVerificationEmail({
+            email: formData.email,
+            callbackURL: "/",
+          });
+          toast.success(
+            "Account created successfully,Verification Email is sent to your email address"
+          );
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      }
+    );
+    setIsExecuting(false);
+  };
   return (
     <Form {...form}>
       <form
