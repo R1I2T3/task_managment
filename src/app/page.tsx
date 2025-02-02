@@ -16,7 +16,9 @@ export default async function Home() {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
             <CheckCircle className="h-8 w-8 text-blue-600" />
-            <span className="text-xl font-bold text-gray-800">TaskMaster</span>
+            <span className="text-xl font-bold text-gray-800 dark:text-white">
+              TaskMaster
+            </span>
           </Link>
           <div className="flex items-center space-x-4">
             {session && <LogoutButton />}

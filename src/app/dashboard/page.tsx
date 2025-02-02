@@ -1,7 +1,5 @@
-import React from "react";
+export default function DashboardPage() {
+  // Mock data for projects and tasks
 
-const DashBoardPage = () => {
-  return <div>DashBoardPage</div>;
-};
-
-export default DashBoardPage;
+  return <h1>dadas</h1>;
+}
