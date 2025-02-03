@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { CreateProject, GetMyProjects } from "@/features/project/data-access";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GET = async (request: Request) => {
   try {
     const session = await auth.api.getSession({
