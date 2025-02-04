@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,7 +11,7 @@ export const useGetProjects = () => {
     queryFn: async () => {
       const res = await fetch("/api/project");
       const data = await res.json();
-      return data;
+      return data.data;
     },
   });
   return query;
@@ -54,8 +55,22 @@ export const useUpdateProject = (projectId: string) => {
       });
       return res.json();
     },
-    onError: (error) => {
+    onMutate: async (newProject: ProjectUpdateType) => {
+      await queryClient.cancelQueries({ queryKey: ["projects"] });
+      const previousProjects = queryClient.getQueryData(["posts"]);
+      queryClient.setQueryData(["projects"], (old: any) => {
+        return old.map((project: any) => {
+          if (project.id === projectId) {
+            return { ...project, ...newProject };
+          }
+          return project;
+        });
+      });
+      return { previousProjects };
+    },
+    onError: (error, newProject, context) => {
       console.log(error);
+      queryClient.setQueryData(["projects"], context?.previousProjects);
       toast.error("Failed to update project");
     },
     onSuccess: () => {
@@ -75,8 +90,18 @@ export const useDeleteProject = (projectId: string) => {
       });
       return res.json();
     },
-    onError: (error) => {
+    onMutate: async (variable) => {
+      console.log(variable);
+      await queryClient.cancelQueries({ queryKey: ["projects"] });
+      const previousProjects = queryClient.getQueryData(["posts"]);
+      queryClient.setQueryData(["projects"], (old: any) => {
+        return old.filter((project: any) => project.id !== projectId);
+      });
+      return { previousProjects };
+    },
+    onError: (error, variable, context) => {
       console.log(error);
+      queryClient.setQueryData(["projects"], context?.previousProjects);
       toast.error("Failed to delete project");
     },
     onSuccess: () => {

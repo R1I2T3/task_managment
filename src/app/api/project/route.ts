@@ -21,9 +21,14 @@ export const GET = async (request: Request) => {
       );
     }
     const res = await GetMyProjects(session.user.id);
-    return NextResponse.json(res, {
-      status: 200,
-    });
+    return NextResponse.json(
+      {
+        data: res,
+      },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json(

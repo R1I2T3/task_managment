@@ -15,15 +15,12 @@ import {
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/ModeToggle";
 import Link from "next/link";
-import { CheckCircle, BarChart2, LogOut, Plus } from "lucide-react";
+import { CheckCircle, BarChart2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Project from "./Projects";
+import AddProject from "./AddProject";
 const SideBar = () => {
-  const projects = [
-    { id: 1, name: "Project A" },
-    { id: 2, name: "Project B" },
-    { id: 3, name: "Project C" },
-  ];
   const router = useRouter();
   return (
     <Sidebar className="lg:w-64 ">
@@ -53,21 +50,8 @@ const SideBar = () => {
         <SidebarGroup>
           <SidebarGroupLabel>Projects</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {projects.map((project) => (
-                <SidebarMenuItem
-                  key={project.id}
-                  onClick={() => router.push(`/dashboard/${project.id}`)}
-                >
-                  <SidebarMenuButton>{project.name}</SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-            {projects.length < 5 && (
-              <Button variant="outline" size="sm" className="w-full mt-2">
-                <Plus className="h-4 w-4 mr-2" /> Add Project
-              </Button>
-            )}
+            <Project />
+            <AddProject />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
