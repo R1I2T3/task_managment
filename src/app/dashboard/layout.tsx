@@ -3,6 +3,7 @@ import React from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Menu } from "lucide-react";
+import AddNewTask from "@/features/tasks/components/AddNewTask";
 const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
@@ -12,9 +13,12 @@ const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
           <SidebarTrigger className="lg:hidden">
             <Menu className="h-6 w-6" />
           </SidebarTrigger>
-          <h1 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6">
-            Dashboard
-          </h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6">
+              Dashboard
+            </h1>
+            <AddNewTask />
+          </div>
           {children}
         </main>
       </div>

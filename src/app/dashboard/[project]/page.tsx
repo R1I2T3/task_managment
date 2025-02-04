@@ -6,34 +6,57 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search } from "lucide-react";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { GetProjectWithTask } from "@/features/project/data-access";
 
-const Project = () => {
-  const tasks = [
-    {
-      id: 1,
-      title: "Task 1",
-      project: "Project A",
-      priority: "High",
-      dueDate: "2025-02-05",
-    },
-    {
-      id: 2,
-      title: "Task 2",
-      project: "Project B",
-      priority: "Medium",
-      dueDate: "2025-02-10",
-    },
-    {
-      id: 3,
-      title: "Task 3",
-      project: "Project C",
-      priority: "Low",
-      dueDate: "2025-02-15",
-    },
-  ];
+interface ProjectType {
+  params: {
+    project: string;
+  };
+}
+const Project = async ({ params }: ProjectType) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const { project } = await params;
+  if (!session) {
+    return redirect("/");
+  }
+  const data = await GetProjectWithTask(session.user.id, project);
+  console.log(data);
   return (
     <>
-      {/* Task Management Section */}
+      {/* Task Filtering and Search */}
+      <Card className="mt-4 lg:mt-6">
+        <CardHeader>
+          <CardTitle>Search and Filter Tasks</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+            <Input placeholder="Search tasks..." className="flex-1" />
+            <Button className="w-full sm:w-auto">
+              <Search className="h-4 w-4 mr-2" />
+              Search
+            </Button>
+          </div>
+          {/* Add filter options here */}
+        </CardContent>
+      </Card>
+
+      {/* Calendar Widget */}
+      <Card className="mt-4 lg:mt-6 mb-3">
+        <CardHeader>
+          <CardTitle>Calendar</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center">
+            <Calendar className="rounded-md border" />
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 lg:gap-6 md:grid-cols-2">
         <Card className="col-span-full md:col-span-1">
           <CardHeader>
@@ -54,7 +77,7 @@ const Project = () => {
               </TabsList>
               <TabsContent value="all">
                 <div className="space-y-4">
-                  {tasks.map((task) => (
+                  {/* {tasks.map((task) => (
                     <div
                       key={task.id}
                       className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0"
@@ -80,7 +103,7 @@ const Project = () => {
                         <span className="text-sm">{task.dueDate}</span>
                       </div>
                     </div>
-                  ))}
+                  ))} */}
                 </div>
               </TabsContent>
               {/* Add content for other tabs */}
@@ -113,35 +136,6 @@ const Project = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Calendar Widget */}
-      <Card className="mt-4 lg:mt-6">
-        <CardHeader>
-          <CardTitle>Calendar</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-center">
-            <Calendar className="rounded-md border" />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Task Filtering and Search */}
-      <Card className="mt-4 lg:mt-6">
-        <CardHeader>
-          <CardTitle>Search and Filter Tasks</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-            <Input placeholder="Search tasks..." className="flex-1" />
-            <Button className="w-full sm:w-auto">
-              <Search className="h-4 w-4 mr-2" />
-              Search
-            </Button>
-          </div>
-          {/* Add filter options here */}
-        </CardContent>
-      </Card>
     </>
   );
 };

@@ -53,19 +53,8 @@ export const UpdateProjectSchema = async (
 
 export const DeleteProject = async (owner_id: string, projectId: string) => {
   try {
-    const task = await db
-      .select()
-      .from(tasks)
-      .where(
-        and(eq(tasks.project_id, projectId), eq(tasks.project_id, projectId))
-      );
-    if (task.length !== 1) {
-      return false;
-    }
-    await db.transaction(async (trx) => {
-      await trx.delete(tasks).where(eq(tasks.project_id, projectId));
-      await trx.delete(tasks).where(and(eq(tasks.project_id, projectId)));
-    });
+    await db.delete(tasks).where(eq(tasks.project_id, projectId));
+    await db.delete(projects).where(and(eq(projects.id, projectId)));
     return true;
   } catch (error) {
     console.log(error);
