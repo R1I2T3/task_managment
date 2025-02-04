@@ -17,6 +17,7 @@ import { Form } from "@/components/ui/form";
 import InputFormControl from "@/components/Input";
 import { useParams } from "next/navigation";
 import SelectFormControl from "@/components/Select";
+import { useCreateTask } from "../hooks";
 const AddNewTask = () => {
   const { project } = useParams();
   const form = useForm<createTaskType>({
@@ -30,7 +31,15 @@ const AddNewTask = () => {
       projectId: project as string,
     },
   });
-  const addTask = async () => {};
+  const { mutateAsync, isPending } = useCreateTask();
+  const addTask = async () => {
+    try {
+      await mutateAsync(form.getValues());
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -57,7 +66,9 @@ const AddNewTask = () => {
               label="Select priority of task"
               placeholder="Select priority"
             />
-            <Button type="submit">Add Task</Button>
+            <Button type="submit">
+              {isPending ? "Adding..." : "Add Task"}
+            </Button>
           </form>
         </Form>
       </DialogContent>

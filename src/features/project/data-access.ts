@@ -62,6 +62,15 @@ export const DeleteProject = async (owner_id: string, projectId: string) => {
   }
 };
 
+interface ProjectWithTasks {
+  id: string;
+  name: string;
+  description: string | null;
+  created_at: Date;
+  owner_id: string;
+  tasks: (typeof tasks.$inferSelect)[];
+}
+
 export const GetProjectWithTask = async (
   owner_id: string,
   projectId: string
@@ -72,7 +81,11 @@ export const GetProjectWithTask = async (
       .from(projects)
       .leftJoin(tasks, eq(tasks.project_id, projects.id))
       .where(and(eq(projects.owner_id, owner_id), eq(projects.id, projectId)));
-    return res;
+    const project = res[0].projects as ProjectWithTasks;
+    project.tasks = res
+      .map((r) => r.tasks)
+      .filter((task): task is NonNullable<typeof task> => task !== null);
+    return project;
   } catch (error) {
     console.log(error);
     return null;
