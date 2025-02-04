@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search } from "lucide-react";
 import { auth } from "@/lib/auth";
@@ -11,12 +11,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { GetProjectWithTask } from "@/features/project/data-access";
 
-interface ProjectType {
-  params: {
-    project: string;
-  };
-}
-const Project = async ({ params }: ProjectType) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Project = async ({ params }: any) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
