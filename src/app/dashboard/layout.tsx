@@ -1,10 +1,14 @@
+"use client";
 import SideBar from "@/features/project/components/sidebar";
 import React from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Menu } from "lucide-react";
 import AddNewTask from "@/features/tasks/components/AddNewTask";
+import { usePathname } from "next/navigation";
 const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
+  console.log(pathname);
   return (
     <SidebarProvider>
       <div className="flex h-screen bg-background w-screen">
@@ -17,7 +21,7 @@ const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
             <h1 className="text-2xl lg:text-3xl font-bold mb-4 lg:mb-6">
               Dashboard
             </h1>
-            <AddNewTask />
+            {pathname !== "/dashboard" && <AddNewTask />}
           </div>
           {children}
         </main>
