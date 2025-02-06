@@ -117,7 +117,10 @@ export const useGetProject = (projectId: string) => {
     queryKey: ["project", projectId],
     queryFn: async () => {
       const res = await fetch(`/api/project/${projectId}`);
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error("Failed to fetch Projects");
+      }
+      const { data } = await res.json();
       return data;
     },
   });

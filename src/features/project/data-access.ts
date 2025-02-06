@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { ProjectCreationType, ProjectUpdateType } from "./schema";
 import { projects, tasks } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
+import { ProjectWithTasks } from "./type";
 export const CreateProject = async (
   data: ProjectCreationType,
   owner_id: string
@@ -61,15 +62,6 @@ export const DeleteProject = async (owner_id: string, projectId: string) => {
     return;
   }
 };
-
-interface ProjectWithTasks {
-  id: string;
-  name: string;
-  description: string | null;
-  created_at: Date;
-  owner_id: string;
-  tasks: (typeof tasks.$inferSelect)[];
-}
 
 export const GetProjectWithTask = async (
   owner_id: string,

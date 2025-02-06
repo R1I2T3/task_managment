@@ -33,7 +33,7 @@ export default async function Home() {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Manage Tasks with Ease
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600  mb-8">
               Stay organized, collaborate effortlessly, and boost your
               productivity.
             </p>
@@ -110,7 +110,9 @@ function FeatureCard({
         <div className="flex justify-center mb-4">{icon}</div>
       </CardHeader>
       <CardContent>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+          {title}
+        </h3>
         <p className="text-gray-600">{description}</p>
       </CardContent>
     </Card>

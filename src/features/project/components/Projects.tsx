@@ -20,7 +20,6 @@ const Project = () => {
       </div>
     );
   if (isError) return <div>Error...</div>;
-  console.log(projects);
   return (
     <SidebarMenu>
       {projects.map((project: ProjectType) => (
