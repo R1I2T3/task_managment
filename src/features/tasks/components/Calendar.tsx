@@ -6,6 +6,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import EditTask from "./EditTask";
+import DeleteTask from "./DeleteTask";
 
 type Task = {
   id: string;
@@ -60,7 +62,13 @@ export default function CalendarWithTasks({ tasks }: { tasks: Task[] }) {
             {filteredTasks.length > 0 ? (
               filteredTasks.map((task) => (
                 <div key={task.id} className="mb-4 p-4 border rounded-lg">
-                  <h3 className="text-lg font-semibold mb-2">{task.title}</h3>
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-lg font-semibold mb-2">{task.title}</h3>
+                    <div>
+                      <EditTask task={task} />
+                      <DeleteTask id={task.id} />
+                    </div>
+                  </div>
                   <p className="text-sm text-muted-foreground mb-2">
                     {task.description}
                   </p>

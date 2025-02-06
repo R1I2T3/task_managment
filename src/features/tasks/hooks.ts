@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTaskType, updateTaskType } from "./schema";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
-
 export const useCreateTask = () => {
   const { project } = useParams();
   const queryClient = useQueryClient();
